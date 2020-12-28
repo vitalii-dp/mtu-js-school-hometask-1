@@ -3,10 +3,9 @@
 
 module.exports = (str) => {
   str = str.toUpperCase()
-  const romanRegexp1 = /[^IVXLCDM]|[LVI][CMDL]|X[DM]/
-  const romanRegexp2 = /I{4,}|V{2,}|X{4,}|L{2,}|C{4,}|D{2,}|M{4,}|I{2}[XVL]|I[VXLC]I/
+  const romanRegexp = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/
 
-  if (str.match(romanRegexp1) || str.match(romanRegexp2)) {
+  if (!str || !str.match(romanRegexp)) {
     return 'Wrong input. Try only Roman numerals or check if input does not have ill-formed or some identical letters in a row.'
   }
 
