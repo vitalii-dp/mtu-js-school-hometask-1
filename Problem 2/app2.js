@@ -1,13 +1,22 @@
 // Problem 2
 // Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
 
-module.exports = (input) => {
-  if (isNaN(input) || Array.isArray(input) || input === null || input === '') {
-    return 'Input is not a number'
-  } else if (input < (-2) ** 31 || input > 2 ** 31 - 1) {
-    return 'Input is out of range'
-  }
+const errors = {
+  WRONG_TYPE: 'The input should be a number.',
+  MAX_MIN_VALUE: 'The input is out of range.'
+}
 
+function validateInput(input) {
+  if (isNaN(input) || Array.isArray(input) || typeof input === 'boolean') {
+    throw new Error(errors.WRONG_TYPE)
+  }
+  else if (input < (-2) ** 31 || input > 2 ** 31 - 1) {
+    throw new Error(errors.MAX_MIN_VALUE)
+  }
+}
+
+module.exports = input => {
+  validateInput(input)
   const reversedInput = input.toString().split('').reverse().join('')
   return reversedInput === input.toString()
 }

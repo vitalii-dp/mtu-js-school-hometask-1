@@ -2,20 +2,32 @@
 // Given a sorted array of distinct integers and a target value, return the index if the target is found.
 // If not, return the index where it would be if it were inserted in order.
 
-module.exports = (arr, target) => {
-  if (!Array.isArray(arr)) {
-    return 'Input should be an array'
-  } else if (arr.length === 0) {
-    return 'Array should not be empty'
-  } else if ((typeof target) !== 'number' || target < 0) {
-    return 'Target value should be a positive number'
-  }
+const errors = {
+  WRONG_TYPE: 'The input should be an array and a number.',
+  EMPTY_ARRAY: 'The array should not be empty.',
+  WRONG_ARRAY_VALUE: 'The array should only consist of numbers',
+}
 
-  if (arr.includes(target)) {
-    return arr.indexOf(target)
+function validateInput(array, target) {
+  if (!Array.isArray(array) || !(typeof target === 'number' && Number.isFinite(target))) {
+    throw new Error (errors.WRONG_TYPE)
+  }
+  else if (array.length === 0) {
+    throw new Error (errors.EMPTY_ARRAY)
+  }
+  else if (array.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
+    throw new Error(errors.WRONG_ARRAY_VALUE)
+  }
+}
+
+module.exports = (array, target) => {
+  validateInput(array, target)
+
+  if (array.includes(target)) {
+    return array.indexOf(target)
   } else {
-    let newArr = [...arr, target]
-    newArr = newArr.sort((a, b) => a - b)
-    return newArr.indexOf(target)
+    const completedArray = [...array, target]
+    completedArray.sort((a, b) => a - b)
+    return completedArray.indexOf(target)
   }
 }
