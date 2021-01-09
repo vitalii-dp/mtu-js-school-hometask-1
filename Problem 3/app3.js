@@ -17,13 +17,13 @@ function validateInput(input) {
   if (typeof input !== 'string') {
     throw new Error(errors.WRONG_TYPE)
   }
-  else if (input.match(regexp)) {
+  if (input.match(regexp)) {
     throw new Error(errors.WRONG_CHARACTERS)
   }
-  else if (input === '') {
+  if (input === '') {
     throw new Error(errors.EMPTY_VALUE)
   }
-  else if (input.length > 104) {
+  if (input.length > 104) {
     throw new Error(errors.MAX_LENGTH)
   }
 }

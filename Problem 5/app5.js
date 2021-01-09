@@ -12,10 +12,10 @@ function validateInput(array, target) {
   if (!Array.isArray(array) || !(typeof target === 'number' && Number.isFinite(target))) {
     throw new Error (errors.WRONG_TYPE)
   }
-  else if (array.length === 0) {
+  if (array.length === 0) {
     throw new Error (errors.EMPTY_ARRAY)
   }
-  else if (array.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
+  if (array.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
     throw new Error(errors.WRONG_ARRAY_VALUE)
   }
 }

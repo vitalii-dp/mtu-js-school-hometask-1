@@ -10,7 +10,7 @@ function validateInput(input) {
   if (isNaN(input) || Array.isArray(input) || typeof input === 'boolean') {
     throw new Error(errors.WRONG_TYPE)
   }
-  else if (input < (-2) ** 31 || input > 2 ** 31 - 1) {
+  if (input < (-2) ** 31 || input > 2 ** 31 - 1) {
     throw new Error(errors.MAX_MIN_VALUE)
   }
 }

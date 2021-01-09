@@ -15,19 +15,19 @@ function validateArrays(initialArray, comparedArray) {
   if (!Array.isArray(initialArray) || !Array.isArray(comparedArray)) {
     throw new Error (errors.WRONG_TYPE)
   }
-  else if (initialArray.length === 0) {
+  if (initialArray.length === 0) {
     throw new Error(errors.EMPTY_ARRAY)
   }
-  else if (initialArray.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
+  if (initialArray.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
     throw new Error(errors.WRONG_ARRAY_VALUE)
   }
-  else if (comparedArray.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
+  if (comparedArray.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
     throw new Error(errors.WRONG_ARRAY_VALUE)
   }
-  else if (initialArray.some(el => el < 0) || comparedArray.some(el => el < 0)) {
+  if (initialArray.some(el => el < 0) || comparedArray.some(el => el < 0)) {
     throw new Error(errors.NEGATIVE_VALUE)
   }
-  else if (initialArray.length > 1000 || comparedArray.length > 1000) {
+  if (initialArray.length > 1000 || comparedArray.length > 1000) {
     throw new Error(errors.MAX_ARRAY_LENGTH)
   }
 }

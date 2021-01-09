@@ -13,10 +13,10 @@ function validateInput(input) {
   if (typeof input !== 'string') {
     throw new Error(errors.WRONG_TYPE)
   }
-  else if (input === '') {
+  if (input === '') {
     throw new Error(errors.EMPTY_VALUE)
   }
-  else if (!input.match(romanRegexp)) {
+  if (!input.match(romanRegexp)) {
     throw new Error(errors.WRONG_ROMAN_NUMERAL)
   }
 }
