@@ -1,15 +1,45 @@
 // Problem 1
 // Given a roman numeral, convert it to an integer.
 
-module.exports = (str) => {
-  str = str.toUpperCase()
+const errors = {
+  WRONG_ROMAN_NUMERAL: 'Wrong input. Try only Roman numerals or check if input does not have ill-formed or some identical letters in a row.',
+  WRONG_TYPE: 'The input should be a string.',
+  EMPTY_VALUE: 'The input should not be an empty string.'
+}
+
+function validateInput(input) {
   const romanRegexp = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/
 
-  if (!str || !str.match(romanRegexp)) {
-    return 'Wrong input. Try only Roman numerals or check if input does not have ill-formed or some identical letters in a row.'
+  if (typeof input !== 'string') {
+    throw new Error(errors.WRONG_TYPE)
   }
+  if (input === '') {
+    throw new Error(errors.EMPTY_VALUE)
+  }
+  if (!input.match(romanRegexp)) {
+    throw new Error(errors.WRONG_ROMAN_NUMERAL)
+  }
+}
 
-  let number = 0
+function substractExcess(input, number) {
+  let correctResult = number
+  if (input.includes('IV', 0) || input.includes('IX', 0)) {
+    correctResult -= 2
+  }
+  if (input.includes('XL', 0) || input.includes('XC', 0)) {
+    correctResult -= 20
+  }
+  if (input.includes('CD', 0) || input.includes('CM', 0)) {
+    correctResult -= 200
+  }
+  return correctResult
+}
+
+module.exports = romanString => {
+  validateInput(romanString)
+  const romanStringUppercased = romanString.toUpperCase()
+
+  let sum = 0
   const romanValues = {
     'I': 1,
     'V': 5,
@@ -20,17 +50,7 @@ module.exports = (str) => {
     'M': 1000
   }
 
-  const arr = str.split('')
-  arr.forEach(el => number += romanValues[el])
-  
-  if (str.includes('IV', 0) || str.includes('IX', 0)) {
-    number -= 2
-  }
-  if (str.includes('XL', 0) || str.includes('XC', 0)) {
-    number -= 20
-  }
-  if (str.includes('CD', 0) || str.includes('CM', 0)) {
-    number -= 200
-  }
-  return number
+  const romansArray = romanStringUppercased.split('')
+  romansArray.forEach(el => sum += romanValues[el])
+  return substractExcess(romanStringUppercased, sum)
 }

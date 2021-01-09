@@ -3,32 +3,54 @@
 // Sort the elements of arr1 such that the relative ordering of items in arr1 are the same as in arr2. 
 // Elements that don't appear in arr2 should be placed at the end of arr1 in ascending order.
 
-module.exports = (arr1, arr2) => {
-  if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
-    return 'Input should be an array'
-  }
-  if (arr1.length === 0 || arr1.some(el => el < 0) || arr2.length > 1000 || arr2.some(el => el > 1000)) {
-    return false
-  }
+const errors = {
+  WRONG_TYPE: 'The input should be an array.',
+  EMPTY_ARRAY: 'The initial array should not be empty.',
+  NEGATIVE_VALUE: 'The arrays should only consist of positive numbers.',
+  WRONG_ARRAY_VALUE: 'The arrays should only consist of numbers.',
+  MAX_ARRAY_LENGTH: 'The max array length is 1000.'
+}
 
+function validateArrays(initialArray, comparedArray) {
+  if (!Array.isArray(initialArray) || !Array.isArray(comparedArray)) {
+    throw new Error (errors.WRONG_TYPE)
+  }
+  if (initialArray.length === 0) {
+    throw new Error(errors.EMPTY_ARRAY)
+  }
+  if (initialArray.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
+    throw new Error(errors.WRONG_ARRAY_VALUE)
+  }
+  if (comparedArray.some(el => typeof el !== 'number' || !Number.isFinite(el))) {
+    throw new Error(errors.WRONG_ARRAY_VALUE)
+  }
+  if (initialArray.some(el => el < 0) || comparedArray.some(el => el < 0)) {
+    throw new Error(errors.NEGATIVE_VALUE)
+  }
+  if (initialArray.length > 1000 || comparedArray.length > 1000) {
+    throw new Error(errors.MAX_ARRAY_LENGTH)
+  }
+}
+
+module.exports = (initialArray, comparedArray) => {
+  validateArrays(initialArray, comparedArray)
   let uniquesChunk = []
-  let outputArr = []
-  
-  for (let i = 0; i < arr2.length; i++) {
-    for (let k = 0; k < arr1.length; k++) {
-      if (arr2[i] === arr1[k]) {
-        outputArr.push(arr1[k])
+  const outputArr = []
+
+  comparedArray.forEach(comparedElement => {
+    initialArray.forEach(initialElement => {
+      if (comparedElement === initialElement) {
+        outputArr.push(initialElement)
       }
+    })
+  })
+
+  initialArray.forEach(element => {
+    if(!comparedArray.includes(element)) {
+      uniquesChunk.push(element)
     }
-  }
-  
-  for (let i = 0; i < arr1.length; i++) {
-    if(!arr2.includes(arr1[i])) {
-      uniquesChunk.push(arr1[i])
-    }
-  }
+  })
 
   uniquesChunk = uniquesChunk.sort((a, b) => a - b)
-  outputArr = [...outputArr, ...uniquesChunk]
-  return outputArr
+  return [...outputArr, ...uniquesChunk]
 }
